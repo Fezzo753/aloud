@@ -4,7 +4,8 @@ Edge-style read aloud: natural voices, word-by-word highlighting, click any para
 
 ## Download
 
-Get the latest zips from the [releases page](https://github.com/Fezzo753/aloud/releases/latest): `aloud-chrome-<version>.zip` for Chrome, `aloud-firefox-<version>.zip` for Firefox.
+- **Firefox:** install from [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/aloud-tts-natural-voice-reader/).
+- **Chrome:** get `aloud-chrome-<version>.zip` from the [releases page](https://github.com/Fezzo753/aloud/releases/latest) and follow the steps below.
 
 ## Install on Chrome (Windows)
 
@@ -17,11 +18,9 @@ Get the latest zips from the [releases page](https://github.com/Fezzo753/aloud/r
 
 ## Install on Firefox (142 or newer, desktop)
 
-Firefox only installs add-ons permanently once Mozilla has signed them. Pick one:
+Open [Aloud on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/aloud-tts-natural-voice-reader/) and click **Add to Firefox**. Updates install automatically. The settings page opens on install.
 
-- **Quick test:** open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → pick `aloud-firefox-<version>.zip`. It works fully but is removed when Firefox restarts.
-- **Permanent (free, a few minutes):** sign in at addons.mozilla.org/developers → **Submit a New Add-on** → **On your own** → upload `aloud-firefox-<version>.zip`. Mozilla signs it automatically and gives you an `.xpi`; drag that into Firefox. "On your own" means it isn't listed publicly.
-- **Developer Edition, Nightly or ESR only:** set `xpinstall.signatures.required` to `false` in `about:config`, then drag the zip into Firefox.
+To try a build that isn't published yet, open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → pick `aloud-firefox-<version>.zip` from the [releases page](https://github.com/Fezzo753/aloud/releases/latest). It is removed when Firefox restarts.
 
 If the settings page shows **Firefox is blocking the voice services**, click **Allow access**. Firefox lets you switch off an add-on's site access, and Aloud needs it to reach Azure and ElevenLabs.
 
@@ -71,4 +70,4 @@ python build.py            # writes dist/aloud-chrome-<version>.zip and dist/alo
 python build.py firefox    # one browser only
 ```
 
-To publish a release, bump `VERSION`, merge to `main`, then run the **Release** workflow from the Actions tab. It builds both zips and publishes them as GitHub release `v<version>`.
+To publish a release, bump `VERSION`, merge to `main`, then run the **Release** workflow from the Actions tab. It builds both zips and publishes them as GitHub release `v<version>`. For Firefox, upload `aloud-firefox-<version>.zip` as a new version of the listing at addons.mozilla.org/developers.
