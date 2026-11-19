@@ -7,7 +7,6 @@
 src/common is shared; src/<target> holds that browser's manifest and background.
 Text placeholders like {{BROWSER}} are filled per target.
 """
-import json
 import pathlib
 import shutil
 import sys
@@ -17,7 +16,6 @@ ROOT = pathlib.Path(__file__).resolve().parent
 SRC, DIST = ROOT / "src", ROOT / "dist"
 VERSION = (ROOT / "VERSION").read_text().strip()
 TEXT_EXT = {".html", ".js", ".json", ".css", ".md"}
-REPO_URL = "https://github.com/Fezzo753/aloud"
 
 VARS = {
     "chrome": {
@@ -40,7 +38,7 @@ def build(target: str) -> pathlib.Path:
     shutil.copytree(SRC / target, out, dirs_exist_ok=True)
     shutil.copy(ROOT / "README.md", out / "README.md")
 
-    subs = {**VARS[target], "VERSION": VERSION, "REPO_URL": REPO_URL}
+    subs = {**VARS[target], "VERSION": VERSION}
     for f in out.rglob("*"):
         if f.suffix in TEXT_EXT:
             s = f.read_text(encoding="utf-8")
@@ -58,25 +56,7 @@ def build(target: str) -> pathlib.Path:
             if f.is_file():
                 rel = f.relative_to(out)
                 z.write(f, (pathlib.Path("aloud") / rel) if target == "chrome" else rel)
-    if target == "firefox":
-        write_updates_json(out)
     return zpath
-
-
-def write_updates_json(out: pathlib.Path) -> None:
-    """Firefox update manifest for self-distributed (signed, unlisted) installs.
-
-    The Firefox manifest's update_url points at this file on the latest GitHub
-    release; it in turn points at the signed .xpi attached to that release.
-    """
-    gecko = json.loads((out / "manifest.json").read_text(encoding="utf-8"))["browser_specific_settings"]["gecko"]
-    update = {
-        "version": VERSION,
-        "update_link": f"{REPO_URL}/releases/download/v{VERSION}/aloud-firefox-{VERSION}.xpi",
-        "applications": {"gecko": {"strict_min_version": gecko["strict_min_version"]}},
-    }
-    data = {"addons": {gecko["id"]: {"updates": [update]}}}
-    (DIST / "updates.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

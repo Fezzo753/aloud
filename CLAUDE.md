@@ -26,7 +26,7 @@ The Chrome zip holds an `aloud/` folder (unzip, then Load unpacked). The Firefox
 ## Conventions
 
 - Put code in `src/common` unless it is specific to one browser. A file in `src/<target>` overrides a same-named file from `src/common`.
-- Text files may use `{{VERSION}}`, `{{REPO_URL}}`, `{{BROWSER}}` and `{{BASIC_HINT}}`; `build.py` fills them per target and fails on an unfilled placeholder outside `.js` files. Add new ones to `VARS` in `build.py`.
+- Text files may use `{{VERSION}}`, `{{BROWSER}}` and `{{BASIC_HINT}}`; `build.py` fills them per target and fails on an unfilled placeholder outside `.js` files. Add new ones to `VARS` in `build.py`.
 - Don't hard-code the version in manifests; bump `VERSION` for a release.
-- To release, run the Release workflow from the Actions tab on `main` (or push a tag `v<VERSION>`): `.github/workflows/release.yml` builds both zips and publishes them as GitHub release `v<VERSION>`, with `updates.json` (written by `build.py`). The Firefox manifest's `update_url` reads that file from the latest release; it points at `aloud-firefox-<VERSION>.xpi`, the Mozilla-signed file that has to be attached to the release by hand.
+- To release, run the Release workflow from the Actions tab on `main` (or push a tag `v<VERSION>`): `.github/workflows/release.yml` builds both zips and publishes them as GitHub release `v<VERSION>`.
 - There is no test suite. After a change, run `python build.py` and syntax-check the output: `for f in dist/chrome/*.js dist/firefox/*.js; do node --check "$f"; done`. Behaviour has to be checked by loading the built extension in each browser.

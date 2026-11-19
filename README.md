@@ -20,7 +20,7 @@ Get the latest zips from the [releases page](https://github.com/Fezzo753/aloud/r
 Firefox only installs add-ons permanently once Mozilla has signed them. Pick one:
 
 - **Quick test:** open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → pick `aloud-firefox-<version>.zip`. It works fully but is removed when Firefox restarts.
-- **Permanent (free, a few minutes):** sign in at addons.mozilla.org/developers → **Submit a New Add-on** → **On your own** → upload `aloud-firefox-<version>.zip`. Mozilla signs it automatically and gives you an `.xpi`; drag that into Firefox. "On your own" means it isn't listed publicly. To let installed copies update themselves, attach that `.xpi` to the matching GitHub release, named `aloud-firefox-<version>.xpi`.
+- **Permanent (free, a few minutes):** sign in at addons.mozilla.org/developers → **Submit a New Add-on** → **On your own** → upload `aloud-firefox-<version>.zip`. Mozilla signs it automatically and gives you an `.xpi`; drag that into Firefox. "On your own" means it isn't listed publicly.
 - **Developer Edition, Nightly or ESR only:** set `xpinstall.signatures.required` to `false` in `about:config`, then drag the zip into Firefox.
 
 If the settings page shows **Firefox is blocking the voice services**, click **Allow access**. Firefox lets you switch off an add-on's site access, and Aloud needs it to reach Azure and ElevenLabs.
@@ -71,4 +71,4 @@ python build.py            # writes dist/aloud-chrome-<version>.zip and dist/alo
 python build.py firefox    # one browser only
 ```
 
-To publish a release, bump `VERSION`, merge to `main`, then run the **Release** workflow from the Actions tab. It builds both zips and publishes them as GitHub release `v<version>`, along with `updates.json`, which tells self-installed Firefox copies where the new signed `.xpi` is. Then get the Firefox zip signed at addons.mozilla.org ("On your own") and attach the `.xpi` to the release as `aloud-firefox-<version>.xpi`; until it is attached, Firefox finds no update.
+To publish a release, bump `VERSION`, merge to `main`, then run the **Release** workflow from the Actions tab. It builds both zips and publishes them as GitHub release `v<version>`.
