@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aloud settings</title>
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main>
+  <header class="top">
+    <img src="icons/icon128.png" alt="" width="44" height="44">
+    <div>
+      <h1>Aloud</h1>
+      <p class="muted">Natural read aloud for {{BROWSER}}. Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> on any page.</p>
+    </div>
+    <span id="saved" class="saved" aria-live="polite"></span>
+  </header>
+
+  <section id="perm" class="card warn" hidden>
+    <div>
+      <strong>Firefox is blocking the voice services</strong>
+      <p class="muted">Aloud needs permission to talk to Azure and ElevenLabs. Basic voices work without it.</p>
+    </div>
+    <button type="button" id="permBtn" class="btn primary">Allow access</button>
+  </section>
+
+  <section class="card">
+    <h2>Voice engine</h2>
+    <div class="engines" role="radiogroup" aria-label="Voice engine">
+      <label class="engine">
+        <input type="radio" name="provider" value="azure">
+        <span class="e-body">
+          <strong>Azure Neural</strong>
+          <span class="muted">The same Natural voices Edge uses. Official API, generous free tier.</span>
+        </span>
+      </label>
+      <label class="engine">
+        <input type="radio" name="provider" value="elevenlabs">
+        <span class="e-body">
+          <strong>ElevenLabs</strong>
+          <span class="muted">Premium, very human voices. Exact word timing. Uses your credits.</span>
+        </span>
+      </label>
+      <label class="engine">
+        <input type="radio" name="provider" value="browser">
+        <span class="e-body">
+          <strong>Basic</strong>
+          <span class="muted">Free voices built into {{BROWSER}} and Windows. No key needed.</span>
+        </span>
+      </label>
+    </div>
+
+    <!-- Azure -->
+    <div class="panel" data-panel="azure">
+      <div class="grid2">
+        <label class="field">
+          <span>Speech key</span>
+          <span class="secret">
+            <input id="azureKey" type="password" autocomplete="off" spellcheck="false" placeholder="Key 1 from your Speech resource">
+            <button type="button" class="ghost reveal" data-for="azureKey">Show</button>
+          </span>
+        </label>
+        <label class="field">
+          <span>Region</span>
+          <input id="azureRegion" list="regions" autocomplete="off" spellcheck="false" placeholder="australiaeast">
+          <datalist id="regions">
+            <option value="australiaeast"><option value="southeastasia"><option value="eastasia">
+            <option value="japaneast"><option value="eastus"><option value="eastus2"><option value="westus2">
+            <option value="westeurope"><option value="northeurope"><option value="uksouth"><option value="centralindia">
+          </datalist>
+        </label>
+      </div>
+      <details class="help">
+        <summary>How to get a free Azure key (5 minutes)</summary>
+        <ol>
+          <li>Sign in at <a href="https://portal.azure.com" target="_blank" rel="noopener">portal.azure.com</a> (a free account works).</li>
+          <li>Search <em>Speech</em> and create a <strong>Speech service</strong> resource. Pick the <strong>Free F0</strong> pricing tier and a region close to you, e.g. <em>Australia East</em>.</li>
+          <li>Open the resource → <strong>Keys and Endpoint</strong>. Copy <strong>Key 1</strong> and the <strong>Location/Region</strong> into the boxes above.</li>
+          <li>Click <strong>Load voices</strong> below.</li>
+        </ol>
+      </details>
+      <div class="voicebox">
+        <div class="vb-head">
+          <input class="vsearch" data-p="azure" type="search" placeholder="Search voices — try “Natasha”, “ja-JP”, “Multilingual”">
+          <button type="button" class="btn" data-load="azure">Load voices</button>
+        </div>
+        <select class="vselect" data-p="azure" size="9" aria-label="Azure voice"></select>
+        <p class="hint muted" data-hint="azure"></p>
+      </div>
+    </div>
+
+    <!-- ElevenLabs -->
+    <div class="panel" data-panel="elevenlabs">
+      <div class="grid2">
+        <label class="field">
+          <span>API key</span>
+          <span class="secret">
+            <input id="elevenKey" type="password" autocomplete="off" spellcheck="false" placeholder="From elevenlabs.io → Developers → API keys">
+            <button type="button" class="ghost reveal" data-for="elevenKey">Show</button>
+          </span>
+        </label>
+        <label class="field">
+          <span>Model</span>
+          <select id="elevenModel">
+            <option value="eleven_flash_v2_5">Flash v2.5 — fastest, cheapest</option>
+            <option value="eleven_turbo_v2_5">Turbo v2.5 — balanced</option>
+            <option value="eleven_multilingual_v2">Multilingual v2 — best quality</option>
+          </select>
+        </label>
+      </div>
+      <div class="voicebox">
+        <div class="vb-head">
+          <input class="vsearch" data-p="elevenlabs" type="search" placeholder="Search your voices">
+          <button type="button" class="btn" data-load="elevenlabs">Load voices</button>
+        </div>
+        <select class="vselect" data-p="elevenlabs" size="9" aria-label="ElevenLabs voice"></select>
+        <p class="hint muted" data-hint="elevenlabs"></p>
+      </div>
+    </div>
+
+    <!-- Browser -->
+    <div class="panel" data-panel="browser">
+      <div class="voicebox">
+        <div class="vb-head">
+          <input class="vsearch" data-p="browser" type="search" placeholder="Search installed voices">
+        </div>
+        <select class="vselect" data-p="browser" size="9" aria-label="Basic voice"></select>
+        <p class="hint muted">{{BASIC_HINT}}</p>
+      </div>
+    </div>
+
+    <div class="preview">
+      <input id="sample" type="text" value="This is how your pages will sound. Clear, natural, and easy to follow.">
+      <button type="button" id="previewBtn" class="btn primary">Preview</button>
+    </div>
+    <p id="previewErr" class="err" role="alert"></p>
+  </section>
+
+  <section class="card">
+    <h2>Reading</h2>
+    <div class="row">
+      <div><strong>Speed</strong><div class="muted">Changes instantly while reading. Pitch stays natural.</div></div>
+      <div class="rate"><input id="rate" type="range" min="0.5" max="3" step="0.05"><output id="rateOut"></output></div>
+    </div>
+    <div class="row">
+      <div><strong>Highlight</strong><div class="muted">What to mark on the page as it reads.</div></div>
+      <select id="highlight">
+        <option value="word">Word + sentence</option>
+        <option value="sentence">Sentence only</option>
+        <option value="none">Nothing</option>
+      </select>
+    </div>
+    <label class="row toggle">
+      <div><strong>Skip clutter</strong><div class="muted">Read the article only — skips menus, ads, sidebars, comments, footers.</div></div>
+      <input id="smart" type="checkbox" role="switch">
+    </label>
+    <label class="row toggle">
+      <div><strong>Follow along</strong><div class="muted">Scroll to keep the current word in view. Pauses for a few seconds when you scroll yourself.</div></div>
+      <input id="autoscroll" type="checkbox" role="switch">
+    </label>
+  </section>
+
+  <section class="card">
+    <h2>Using it</h2>
+    <ul class="howto">
+      <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> or the toolbar icon — start / stop reading.</li>
+      <li>Hover a paragraph and click the blue <span class="dot">▶</span> next to it to read from there. Or <kbd>Alt</kbd>+click any sentence.</li>
+      <li>Select text first to start from the selection. Right-click a selection to read only that bit.</li>
+      <li><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> play/pause · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>←</kbd>/<kbd>→</kbd> previous/next paragraph · <kbd>Esc</kbd> close.</li>
+    </ul>
+    <button type="button" id="shortcuts" class="btn">Change shortcuts</button>
+  </section>
+
+  <section class="card">
+    <h2>This month</h2>
+    <div class="usage">
+      <div><span class="big" id="useAzure">0</span><span class="muted">Azure characters</span></div>
+      <div><span class="big" id="useEleven">0</span><span class="muted">ElevenLabs characters</span></div>
+    </div>
+    <p class="muted small">Counted by this extension, for keeping an eye on free tiers. Your provider's dashboard is the source of truth. Sentences you replay in the same session come from a cache and aren't charged again.</p>
+  </section>
+
+  <p class="foot muted small">Keys stay in this browser's local extension storage and are only sent to the provider you choose.</p>
+</main>
+<script src="shared.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

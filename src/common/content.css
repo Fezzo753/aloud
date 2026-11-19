@@ -1,0 +1,11 @@
+/* Injected into the page. CSS Custom Highlight API — paints over text without touching the DOM. */
+::highlight(aloud-sentence) {
+  background-color: rgba(47, 111, 237, 0.14);
+}
+::highlight(aloud-word) {
+  background-color: rgba(47, 111, 237, 0.42);
+}
+@media (prefers-color-scheme: dark) {
+  ::highlight(aloud-sentence) { background-color: rgba(77, 139, 255, 0.20); }
+  ::highlight(aloud-word) { background-color: rgba(77, 139, 255, 0.55); }
+}
