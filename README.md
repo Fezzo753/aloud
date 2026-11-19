@@ -2,11 +2,15 @@
 
 Edge-style read aloud: natural voices, word-by-word highlighting, click any paragraph to start there, and article-only reading that skips menus, ads and comments.
 
+## Download
+
+Get the latest zips from the [releases page](https://github.com/Fezzo753/aloud/releases/latest): `aloud-chrome-<version>.zip` for Chrome, `aloud-firefox-<version>.zip` for Firefox.
+
 ## Install on Chrome (Windows)
 
 1. Unzip somewhere permanent. Chrome loads it from this folder, so don't delete it afterwards:
    ```powershell
-   Expand-Archive "$env:USERPROFILE\Downloads\aloud-chrome-1.1.0.zip" -DestinationPath "$env:USERPROFILE\Extensions"
+   Expand-Archive "$env:USERPROFILE\Downloads\aloud-chrome-*.zip" -DestinationPath "$env:USERPROFILE\Extensions"
    ```
 2. Open `chrome://extensions`, turn on **Developer mode** (top right), click **Load unpacked**, and pick the `aloud` folder.
 3. Pin it from the puzzle-piece menu. The settings page opens automatically on install.
@@ -15,8 +19,8 @@ Edge-style read aloud: natural voices, word-by-word highlighting, click any para
 
 Firefox only installs add-ons permanently once Mozilla has signed them. Pick one:
 
-- **Quick test:** open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → pick `aloud-firefox-1.1.0.zip`. It works fully but is removed when Firefox restarts.
-- **Permanent (free, a few minutes):** sign in at addons.mozilla.org/developers → **Submit a New Add-on** → **On your own** → upload `aloud-firefox-1.1.0.zip`. Mozilla signs it automatically and gives you an `.xpi`; drag that into Firefox. "On your own" means it isn't listed publicly.
+- **Quick test:** open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → pick `aloud-firefox-<version>.zip`. It works fully but is removed when Firefox restarts.
+- **Permanent (free, a few minutes):** sign in at addons.mozilla.org/developers → **Submit a New Add-on** → **On your own** → upload `aloud-firefox-<version>.zip`. Mozilla signs it automatically and gives you an `.xpi`; drag that into Firefox. "On your own" means it isn't listed publicly.
 - **Developer Edition, Nightly or ESR only:** set `xpinstall.signatures.required` to `false` in `about:config`, then drag the zip into Firefox.
 
 If the settings page shows **Firefox is blocking the voice services**, click **Allow access**. Firefox lets you switch off an add-on's site access, and Aloud needs it to reach Azure and ElevenLabs.
@@ -62,7 +66,9 @@ The `…Multilingual` Azure voices switch language automatically, so one voice h
 
 `src/common` is shared by both browsers; `src/chrome` and `src/firefox` hold each one's manifest and background script. The version lives in `VERSION`.
 
-```powershell
+```bash
 python build.py            # writes dist/aloud-chrome-<version>.zip and dist/aloud-firefox-<version>.zip
 python build.py firefox    # one browser only
 ```
+
+To publish a release, bump `VERSION`, merge to `main`, then run the **Release** workflow from the Actions tab. It builds both zips and publishes them as GitHub release `v<version>`.
