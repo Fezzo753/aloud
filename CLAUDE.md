@@ -28,5 +28,5 @@ The Chrome zip holds an `aloud/` folder (unzip, then Load unpacked). The Firefox
 - Put code in `src/common` unless it is specific to one browser. A file in `src/<target>` overrides a same-named file from `src/common`.
 - Text files may use `{{VERSION}}`, `{{BROWSER}}` and `{{BASIC_HINT}}`; `build.py` fills them per target and fails on an unfilled placeholder outside `.js` files. Add new ones to `VARS` in `build.py`.
 - Don't hard-code the version in manifests; bump `VERSION` for a release.
-- To release, push a tag `v<VERSION>`: `.github/workflows/release.yml` builds both zips and publishes them as a GitHub release. The tag must match `VERSION`.
+- To release, run the Release workflow from the Actions tab on `main` (or push a tag `v<VERSION>`): `.github/workflows/release.yml` builds both zips and publishes them as GitHub release `v<VERSION>`.
 - There is no test suite. After a change, run `python build.py` and syntax-check the output: `for f in dist/chrome/*.js dist/firefox/*.js; do node --check "$f"; done`. Behaviour has to be checked by loading the built extension in each browser.
