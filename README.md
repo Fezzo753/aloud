@@ -15,7 +15,7 @@ Get the latest zips from the [releases page](https://github.com/Fezzo753/aloud/r
 2. Open `chrome://extensions`, turn on **Developer mode** (top right), click **Load unpacked**, and pick the `aloud` folder.
 3. Pin it from the puzzle-piece menu. The settings page opens automatically on install.
 
-## Install on Firefox (140 or newer)
+## Install on Firefox (142 or newer, desktop)
 
 Firefox only installs add-ons permanently once Mozilla has signed them. Pick one:
 
